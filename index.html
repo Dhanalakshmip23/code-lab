@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 CodeLab Ultimate - AI-Powered Coding Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #a5b4fc;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --gray-light: #94a3b8;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+            --gold: #fbbf24;
+            --silver: #94a3b8;
+            --bronze: #b45309;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 1rem 2rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%,100%{transform:translateY(0)}
+            50%{transform:translateY(-5px)}
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--light);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .level-badge {
+            background: var(--gold);
+            color: var(--dark);
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .xp-bar {
+            width: 100px;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .xp-fill {
+            height: 100%;
+            background: var(--primary);
+            width: 65%;
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--light);
+            padding: 0.5rem;
+            border-radius: 1rem;
+            overflow-x: auto;
+        }
+
+        .nav-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: transparent;
+            color: var(--gray);
+            font-weight: 600;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-btn:hover {
+            color: var(--primary);
+            background: white;
+        }
+
+        .nav-btn.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: var(--shadow);
+        }
+
+        /* Dashboard Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            background: var(--light);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 1rem;
+        }
+
+        .stat-info h4 {
+            font-size: 0.875rem;
+            color: var(--gray);
+        }
+
+        .stat-info p {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        /* Main Content */
+        .tab-content {
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Code Execution */
+        .execution-container {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 1rem;
+            height: 70vh;
+        }
+
+        .editor-panel {
+            background: #1e1e1e;
+            border-radius: 1rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-header {
+            padding: 1rem;
+            background: #2d2d2d;
+            border-bottom: 1px solid #404040;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .language-select {
+            padding: 0.5rem 2rem 0.5rem 1rem;
+            background: #404040;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .code-editor {
+            flex: 1;
+            width: 100%;
+            padding: 1rem;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border: none;
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            resize: none;
+        }
+
+        .output-panel {
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .output-header {
+            padding: 1rem;
+            background: var(--light);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .output-area {
+            flex: 1;
+            padding: 1rem;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            font-family: monospace;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        /* Live Users */
+        .live-users {
+            background: white;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .user-avatars {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .user-avatar {
+            background: var(--primary-light);
+            padding: 0.25rem 0.75rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .user-avatar.coding {
+            background: var(--success);
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        /* Achievements */
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .badge-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .badge-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .badge-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge-card.locked {
+            opacity: 0.5;
+            filter: grayscale(1);
+        }
+
+        .badge-card.earned {
+            border: 2px solid var(--gold);
+        }
+
+        /* Leaderboard */
+        .leaderboard {
+            background: white;
+            border-radius: 1rem;
+            padding: 1rem;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .rank {
+            font-weight: bold;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .rank.gold { background: var(--gold); color: var(--dark); }
+        .rank.silver { background: var(--silver); color: white; }
+        .rank.bronze { background: var(--bronze); color: white; }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+        }
+
+        .user-xp {
+            font-size: 0.75rem;
+            color: var(--gray);
+        }
+
+        .points {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        /* NFT Marketplace */
+        .nft-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .nft-card {
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            transition: transform 0.3s;
+        }
+
+        .nft-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .nft-preview {
+            height: 150px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .nft-details {
+            padding: 1rem;
+        }
+
+        .nft-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .nft-price {
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.25rem;
+        }
+
+        .nft-owner {
+            font-size: 0.75rem;
+            color: var(--gray);
+        }
+
+        /* Job Matcher */
+        .job-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid transparent;
+        }
+
+        .job-card.high-match {
+            border-left-color: var(--success);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .company {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .match-score {
+            background: var(--success);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+        }
+
+        .skills-match {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin: 0.5rem 0;
+        }
+
+        .skill-tag {
+            background: var(--light);
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+        }
+
+        .skill-tag.matched {
+            background: var(--success);
+            color: white;
+        }
+
+        .salary {
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        /* Code Health */
+        .health-meter {
+            background: white;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .health-score {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .score-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: conic-gradient(var(--success) 0deg 288deg, var(--border) 288deg 360deg);
+        }
+
+        .health-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .metric {
+            text-align: center;
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: var(--gray);
+        }
+
+        .metric-value {
+            font-weight: bold;
+        }
+
+        /* AI Detection */
+        .ai-meter {
+            background: white;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .ai-bar {
+            width: 100%;
+            height: 20px;
+            background: var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+
+        .ai-fill {
+            height: 100%;
+            transition: width 0.3s;
+        }
+
+        .ai-fill.high { background: var(--danger); }
+        .ai-fill.medium { background: var(--warning); }
+        .ai-fill.low { background: var(--success); }
+
+        .ai-reasons {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .ai-reasons li {
+            padding: 0.25rem 0;
+            font-size: 0.875rem;
+            color: var(--gray);
+        }
+
+        /* Learning Path */
+        .path-timeline {
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .path-timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .path-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .path-marker {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .path-marker.completed {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .path-content {
+            flex: 1;
+            background: white;
+            padding: 1rem;
+            border-radius: 1rem;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--dark);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: var(--shadow-lg);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success { background: var(--success); }
+        .toast.error { background: var(--danger); }
+        .toast.warning { background: var(--warning); }
+
+        /* Loading */
+        .loading {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 2000;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--light);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .execution-container {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <span class="logo-icon">🚀</span>
+                <span>CodeLab Ultimate</span>
+                <span class="level-badge">Level 42</span>
+            </div>
+            
+            <div class="user-profile">
+                <div class="avatar">JD</div>
+                <div>
+                    <div style="font-weight:600">John Doe</div>
+                    <div class="xp-bar">
+                        <div class="xp-fill" style="width:65%"></div>
+                    </div>
+                    <div style="font-size:0.75rem">1,250 / 2,000 XP</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Dashboard -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-info">
+                    <h4>Total Runs</h4>
+                    <p>1,234</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🏆</div>
+                <div class="stat-info">
+                    <h4>Achievements</h4>
+                    <p>24/50</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💎</div>
+                <div class="stat-info">
+                    <h4>NFTs Owned</h4>
+                    <p>7</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📈</div>
+                <div class="stat-info">
+                    <h4>Rank</h4>
+                    <p>#127</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Users -->
+        <div class="live-users">
+            <h4>👥 Live Now (24 online)</h4>
+            <div class="user-avatars">
+                <div class="user-avatar coding">👨‍💻 Alice (coding)</div>
+                <div class="user-avatar">👩‍💻 Bob</div>
+                <div class="user-avatar coding">🧑‍💻 Charlie</div>
+                <div class="user-avatar">👨‍💻 David</div>
+                <div class="user-avatar">👩‍💻 Eve</div>
+                <div class="user-avatar">+19 more</div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-tabs">
+            <button class="nav-btn active" onclick="switchTab('execution')">🚀 Code</button>
+            <button class="nav-btn" onclick="switchTab('plagiarism')">🔍 Plagiarism</button>
+            <button class="nav-btn" onclick="switchTab('ai-detector')">🤖 AI Detector</button>
+            <button class="nav-btn" onclick="switchTab('achievements')">🏆 Achievements</button>
+            <button class="nav-btn" onclick="switchTab('leaderboard')">📊 Leaderboard</button>
+            <button class="nav-btn" onclick="switchTab('nft')">💎 NFT Market</button>
+            <button class="nav-btn" onclick="switchTab('jobs')">💼 Jobs</button>
+            <button class="nav-btn" onclick="switchTab('health')">📈 Code Health</button>
+            <button class="nav-btn" onclick="switchTab('learn')">📚 Learning Path</button>
+        </div>
+
+        <!-- Code Execution Tab -->
+        <div id="execution" class="tab-content active">
+            <div class="execution-container">
+                <div class="editor-panel">
+                    <div class="panel-header">
+                        <select id="language" class="language-select">
+                            <option value="javascript">JavaScript</option>
+                            <option value="python">Python</option>
+                            <option value="java">Java</option>
+                            <option value="c">C</option>
+                        </select>
+                        <div class="btn-group">
+                            <button class="btn btn-success" onclick="optimizeCode()">⚡ Optimize</button>
+                            <button class="btn btn-warning" onclick="visualizeCode()">👁️ Visualize</button>
+                            <button class="btn btn-primary" onclick="runCode()">▶ Run</button>
+                        </div>
+                    </div>
+                    <textarea id="codeEditor" class="code-editor" spellcheck="false">// Welcome to CodeLab Ultimate!
+// Write your code here...
+
+function fibonacci(n) {
+    if (n <= 1) return n;
+    return fibonacci(n-1) + fibonacci(n-2);
+}
+
+console.log("Fibonacci Sequence:");
+for (let i = 0; i < 10; i++) {
+    console.log(`fib(${i}) = ${fibonacci(i)}`);
+}</textarea>
+                </div>
+                
+                <div>
+                    <div class="output-panel" style="height: 40%; margin-bottom: 1rem;">
+                        <div class="output-header">
+                            <h3>Output</h3>
+                            <button class="btn" onclick="clearOutput()">Clear</button>
+                        </div>
+                        <pre id="output" class="output-area">Click Run to execute code...</pre>
+                    </div>
+                    
+                    <div class="health-meter">
+                        <h4>📊 Live Code Health</h4>
+                        <div id="liveHealth">
+                            <div class="health-score">
+                                <div class="score-circle" id="healthCircle">85</div>
+                                <div>
+                                    <p>Complexity: Medium</p>
+                                    <p>Performance: Good</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Plagiarism Checker Tab -->
+        <div id="plagiarism" class="tab-content">
+            <div style="background: white; border-radius: 1rem; padding: 2rem;">
+                <h2>🔍 Plagiarism Checker</h2>
+                <div class="upload-area" id="uploadArea" style="border:2px dashed var(--border); padding:3rem; text-align:center; margin:2rem 0; border-radius:1rem; cursor:pointer">
+                    <div style="font-size:4rem">📁</div>
+                    <h3>Drop files here or click to upload</h3>
+                    <p>Supported: .js, .py, .java, .c, .txt (Max 1MB)</p>
+                    <input type="file" id="fileInput" multiple accept=".txt,.js,.py,.c,.java" hidden>
+                    <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">Choose Files</button>
+                </div>
+                
+                <div id="filesList" class="files-list" style="display:flex; gap:0.5rem; flex-wrap:wrap; margin:1rem 0"></div>
+                
+                <button class="btn btn-primary" onclick="checkPlagiarism()" id="checkBtn" disabled style="width:100%">🔍 Check Plagiarism</button>
+                
+                <div id="plagiarismResults" style="margin-top:2rem; display:none">
+                    <h3>Results</h3>
+                    <div id="resultsGrid"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Detector Tab -->
+        <div id="ai-detector" class="tab-content">
+            <div style="background: white; border-radius: 1rem; padding: 2rem;">
+                <h2>🤖 AI Code Detector</h2>
+                <p>Upload code to check if it was written by AI (ChatGPT, Copilot, etc.)</p>
+                
+                <textarea id="aiCodeInput" class="code-editor" style="height:200px; margin:1rem 0" placeholder="Paste code here to analyze..."></textarea>
+                
+                <button class="btn btn-primary" onclick="detectAI()">🔍 Detect AI</button>
+                
+                <div id="aiResults" style="margin-top:2rem; display:none">
+                    <h3>Analysis Results</h3>
+                    <div class="ai-meter">
+                        <div style="display:flex; justify-content:space-between">
+                            <span>AI-Generated Probability</span>
+                            <span id="aiPercentage">0%</span>
+                        </div>
+                        <div class="ai-bar">
+                            <div class="ai-fill" id="aiBar" style="width:0%"></div>
+                        </div>
+                        <ul class="ai-reasons" id="aiReasons"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievements Tab -->
+        <div id="achievements" class="tab-content">
+            <div style="background: white; border-radius: 1rem; padding: 2rem;">
+                <h2>🏆 Achievements</h2>
+                <p>XP: 1,250/2,000 • Next Level: 42 → 43</p>
+                
+                <div class="badges-grid">
+                    <div class="badge-card earned">
+                        <div class="badge-icon">🔥</div>
+                        <h4>7-Day Streak</h4>
+                        <p>Coded 7 days in a row</p>
+                    </div>
+                    <div class="badge-card earned">
+                        <div class="badge-icon">⚡</div>
+                        <h4>Speed Demon</h4>
+                        <p>Solved 10 problems fast</p>
+                    </div>
+                    <div class="badge-card earned">
+                        <div class="badge-icon">🛡️</div>
+                        <h4>Bug Hunter</h4>
+                        <p>Found 50 bugs</p>
+                    </div>
+                    <div class="badge-card">
+                        <div class="badge-icon">🤝</div>
+                        <h4>Team Player</h4>
+                        <p>Help 5 students</p>
+                        <small>3/5 completed</small>
+                    </div>
+                    <div class="badge-card">
+                        <div class="badge-icon">🏆</div>
+                        <h4>Champion</h4>
+                        <p>Win weekly contest</p>
+                        <small>0/1 completed</small>
+                    </div>
+                    <div class="badge-card">
+                        <div class="badge-icon">💎</div>
+                        <h4>NFT Collector</h4>
+                        <p>Own 10 NFTs</p>
+                        <small>7/10 completed</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leaderboard Tab -->
+        <div id="leaderboard" class="tab-content">
+            <div style="background: white; border-radius: 1rem; padding: 2rem;">
+                <h2>📊 Global Leaderboard</h2>
+                
+                <div class="leaderboard">
+                    <div class="leaderboard-item">
+                        <div class="rank gold">1</div>
+                        <div class="user-info">
+                            <div class="user-name">Alice Johnson</div>
+                            <div class="user-xp">Level 89 • 15,430 XP</div>
+                        </div>
+                        <div class="points">🏆 4,520</div>
+                    </div>
+                    
+                    <div class="leaderboard-item">
+                        <div class="rank silver">2</div>
+                        <div class="user-info">
+                            <div class="user-name">Bob Smith</div>
+                            <div class="user-xp">Level 87 • 14,890 XP</div>
+                        </div>
+                        <div class="points">🏆 4,210</div>
+                    </div>
+                    
+                    <div class="leaderboard-item">
+                        <div class="rank bronze">3</div>
+                        <div class="user-info">
+                            <div class="user-name">Carol Davis</div>
+                            <div class="user-xp">Level 85 • 14,120 XP</div>
+                        </div>
+                        <div class="points">🏆 3,980</div>
+                    </div>
+                    
+                    <div class="leaderboard-item">
+                        <div class="rank">4</div>
+                        <div class="user-info">
+                            <div class="user-name">David Wilson</div>
+                            <div class="user-xp">Level 82 • 13,450 XP</div>
+                        </div>
+                        <div class="points">🏆 3,650</div>
+                    </div>
+                    
+                    <div class="leaderboard-item" style="background: var(--light); border-radius: 0.5rem;">
+                        <div class="rank">127</div>
+                        <div class="user-info">
+                            <div class="user-name">You</div>
+                            <div class="user-xp">Level 42 • 1,250 XP</div>
+                        </div>
+                        <div class="points">📈 +15 today</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NFT Marketplace Tab -->
+        <div id="nft" class="tab-content">
+            <div style="background: white; border-radius: 1rem; padding: 2rem;">
+                <h2>💎 NFT Marketplace</h2>
+                <p>Your Balance: 2.3 ETH • Owned: 7 NFTs</p>
+                
+                <div class="nft-grid">
+                    <div class="nft-card">
+                        <div class="nft-preview">🚀</div>
+                        <div class="nft-details">
+                            <div class="nft-title">QuickSort Algorithm</div>
+                            <div class="nft-price">0.5 ETH</div>
+                            <div class="nft-owner">by @alice</div>
+                            <button class="btn btn-primary" style="width:100%; margin-top:0.5rem">Buy Now</button>
+                        </div>
+                    </div>
+                    
+                    <div class="nft-card">
+                        <div class="nft-preview">🤖</div>
+                        <div class="nft-details">
+                            <div class="nft-title">AI Image Classifier</div>
+                            <div class="nft-price">1.2 ETH</div>
+                            <div class="nft-owner">by @bob</div>
+                            <button class="btn btn-primary" style="width:100%; margin-top:0.5rem">Buy Now</button>
+                        </div>
+                    </div>
+                    
+                    <div class="nft-card">
+                        <div class="nft-preview">🔐</div>
+                        <div class="nft-details">
+                            <div class="nft-title">Blockchain Auth</div>
+                            <div class="nft-price">0.8 ETH</div>
+                            <div class="nft-owner">by @charlie</div>
+                            <button class="btn btn-primary" style="width:100%; margin-top:0.5rem">Buy Now</button>
+                        </div>
+                    </div>
+                    
+                    <div class="nft-card">
+                        <div class="nft-preview">🎮</div>
+                        <div class="nft-details">
+                            <div class="nft-title">Game Physics Engine</div>
+                            <div class="nft-price">2.5 ETH</div>
+                            <div class="nft-owner">by @david</div>
+                            <button class="btn btn-primary" style="width:100%; margin-top:0.5rem">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 style="margin-top:2rem">Your Minted NFTs</h3>
+                <div class="nft-grid">
+                    <div class="nft-card">
+                        <div class="nft-preview">⚡</div>
+                        <div class="nft-details">
+                            <div class="nft-title">Fibonacci Optimizer</div>
+                            <div class="nft-price">0.3 ETH</div>
+                            <div class="nft-owner">by you</div>
+                            <button class="btn btn-secondary" style="width:100%; margin-top:0.5rem">Sell</button>
+                        </div>
+                    </div>
+                    
+                    <div class="nft-card">
+                        <div class="nft-preview">📊</div>
+                        <div class="nft-details">
+                            <div class="nft-title">Data Visualizer</div>
+                            <div class="nft-price">0.4 ETH</div>
+                            <div class="nft-owner">by you</div>
+                            <button class="btn btn-secondary" style="width:100%; margin-top:0.5rem">Sell</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Jobs Tab -->
+        <div id="jobs" class="tab-content">
+            <div style="background: white; border-radius: 1rem; padding: 2rem;">
+                <h2>💼 Job Matcher</h2>
+                <p>Based on your code and skills, we found these matches:</p>
+                
+                <div class="job-card high-match">
+                    <div class="job-header">
+                        <span class="company">Google</span>
+                        <span class="match-score">95% Match</span>
+                    </div>
+                    <h3>Senior Frontend Developer</h3>
+                    <div class="skills-match">
+                        <span class="skill-tag matched">JavaScript</span>
+                        <span class="skill-tag matched">React</span>
+                        <span class="skill-tag matched">HTML/CSS</span>
+                        <span class="skill-tag">TypeScript</span>
+                        <span class="skill-tag">GraphQL</span>
+                    </div>
+                    <div class="salary">₹25-35 LPA</div>
+                    <button class="btn btn-primary" style="margin-top:0.5rem">Apply Now</button>
+                </div>
+                
+                <div class="job-card high-match">
+                    <div class="job-header">
+                        <span class="company">Microsoft</span>
+                        <span class="match-score">92% Match</span>
+                    </div>
+                    <h3>Software Engineer</h3>
+                    <div class="skills-match">
+                        <span class="skill-tag matched">JavaScript</span>
+                        <span class="skill-tag matched">Python</span>
+                        <span class="skill-tag">C#</span>
+                        <span class="skill-tag matched">Algorithms</span>
+                        <span class="skill-tag">Azure</span>
+                    </div>
+                    <div class="salary">₹22-30 LPA</div>
+                    <button class="btn btn-primary" style="margin-top:0.5rem">Apply Now</button>
+                </div>
+                
+                <div class="job-card">
+                    <div class="job-header">
+                        <span class="company">Amazon</span>
+                        <span class="match-score" style="background:var(--warning)">78% Match</span>
+                    </div>
+                    <h3>Backend Developer</h3>
+                    <div class="skills-match">
+                        <span class="skill-tag matched">Python</span>
+                        <span class="skill-tag">AWS</span>
+                        <span class="skill-tag matched">SQL</span>
+                        <span class="skill-tag">Docker</span>
+                        <span class="skill-tag">Java</span>
+                    </div>
+                    <div class="salary">₹20-28 LPA</div>
+                    <button class="btn btn-secondary" style="margin-top:0.5rem">Learn Required Skills</button>
+                </div>
+                
+                <div class="job-card">
+                    <div class="job-header">
+                        <span class="company">Startup</span>
+                        <span class="match-score" style="background:var(--success)">100% Match</span>
+                    </div>
+                    <h3>Full Stack Intern</h3>
+                    <div class="skills-match">
+                        <span class="skill-tag matched">JavaScript</span>
+                        <span class="skill-tag matched">React</span>
+                        <span class="skill-tag matched">Node.js</span>
+                        <span class="skill-tag matched">MongoDB</span>
+                    </div>
+                    <div class="salary">₹50-80k/month</div>
+                    <button class="btn btn-primary" style="margin-top:0.5rem">Apply Now</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Code Health Tab -->
+        <div id="health" class="tab-content">
+            <div style="background: white; border-radius: 1rem; padding: 2rem;">
+                <h2>📈 Code Health Monitor</h2>
+                
+                <div class="health-meter">
+                    <div class="health-score">
+                        <div class="score-circle" style="background:conic-gradient(var(--success) 0deg 252deg, var(--border) 252deg 360deg)">72</div>
+                        <div>
+                            <h3>Overall Health: 72%</h3>
+                            <p>Needs Improvement</p>
+                        </div>
+                    </div>
+                    
+                    <div class="health-metrics">
+                        <div class="metric">
+                            <div class="metric-label">Maintainability</div>
+                            <div class="metric-value">85%</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Test Coverage</div>
+                            <div class="metric-value">45%</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Complexity</div>
+                            <div class="metric-value">Medium</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Duplication</div>
+                            <div class="metric-value">12%</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>Issues Found</h3>
+                <ul style="list-style:none; margin-top:1rem">
+                    <li style="padding:0.5rem; background:var(--light); margin-bottom:0.5rem; border-radius:0.5rem">
+                        ⚠️ Function too long (45 lines) - Line 23
+                    </li>
+                    <li style="padding:0.5rem; background:var(--light); margin-bottom:0.5rem; border-radius:0.5rem">
+                        ⚠️ Missing error handling - Line 67
+                    </li>
+                    <li style="padding:0.5rem; background:var(--light); margin-bottom:0.5rem; border-radius:0.5rem">
+                        🔴 Security vulnerability (SQL injection risk) - Line 89
+                    </li>
+                    <li style="padding:0.5rem; background:var(--light); margin-bottom:0.5rem; border-radius:0.5rem">
+                        ✅ Good: Using modern syntax - Line 12
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Learning Path Tab -->
+        <div id="learn" class="tab-content">
+            <div style="background: white; border-radius: 1rem; padding: 2rem;">
+                <h2>📚 Personalized Learning Path</h2>
+                <p>Based on your code analysis, we recommend:</p>
+                
+                <div class="path-timeline">
+                    <div class="path-item">
+                        <div class="path-marker completed">✓</div>
+                        <div class="path-content">
+                            <h4>JavaScript Basics</h4>
+                            <p>Completed • 100% mastery</p>
+                        </div>
+                    </div>
+                    
+                    <div class="path-item">
+                        <div class="path-marker completed">✓</div>
+                        <div class="path-content">
+                            <h4>Functions & Scope</h4>
+                            <p>Completed • 95% mastery</p>
+                        </div>
+                    </div>
+                    
+                    <div class="path-item">
+                        <div class="path-marker">3</div>
+                        <div class="path-content">
+                            <h4>Data Structures</h4>
+                            <p>In Progress • 65% complete</p>
+                            <div class="xp-bar" style="width:100%">
+                                <div class="xp-fill" style="width:65%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="path-item">
+                        <div class="path-marker">4</div>
+                        <div class="path-content">
+                            <h4>Algorithms</h4>
+                            <p>Recommended next • Master recursion</p>
+                            <button class="btn btn-primary" style="margin-top:0.5rem">Start Now</button>
+                        </div>
+                    </div>
+                    
+                    <div class="path-item">
+                        <div class="path-marker">5</div>
+                        <div class="path-content">
+                            <h4>System Design</h4>
+                            <p>Locked • Complete Algorithms first</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background: var(--light); padding:1rem; border-radius:0.5rem; margin-top:1rem">
+                    <h4>🎯 Daily Challenge</h4>
+                    <p>Implement a binary search tree with insert and find methods</p>
+                    <button class="btn btn-success">Accept Challenge (+50 XP)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <div>Processing...</div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // State
+        let selectedFiles = [];
+        let toastTimeout;
+        let userXP = 1250;
+        let userLevel = 42;
+
+        // Tab Switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // Code Execution
+        function runCode() {
+            showLoading(true);
+            
+            setTimeout(() => {
+                const output = "Fibonacci Sequence:\nfib(0) = 0\nfib(1) = 1\nfib(2) = 1\nfib(3) = 2\nfib(4) = 3\nfib(5) = 5\nfib(6) = 8\nfib(7) = 13\nfib(8) = 21\nfib(9) = 34";
+                document.getElementById('output').textContent = output;
+                
+                // Add XP
+                userXP += 10;
+                updateXP();
+                
+                showToast('Code executed! +10 XP', 'success');
+                showLoading(false);
+            }, 1000);
+        }
+
+        function optimizeCode() {
+            showToast('⚡ Optimizing code... Found 3 improvements!', 'success');
+        }
+
+        function visualizeCode() {
+            showToast('👁️ Opening code visualizer...', 'info');
+        }
+
+        function clearOutput() {
+            document.getElementById('output').textContent = '';
+        }
+
+        // Plagiarism Checker
+        document.getElementById('uploadArea').addEventListener('click', () => {
+            document.getElementById('fileInput').click();
+        });
+
+        document.getElementById('uploadArea').addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.target.style.borderColor = 'var(--primary)';
+        });
+
+        document.getElementById('uploadArea').addEventListener('dragleave', (e) => {
+            e.target.style.borderColor = 'var(--border)';
+        });
+
+        document.getElementById('uploadArea').addEventListener('drop', (e) => {
+            e.preventDefault();
+            e.target.style.borderColor = 'var(--border)';
+            handleFiles(Array.from(e.dataTransfer.files));
+        });
+
+        document.getElementById('fileInput').addEventListener('change', (e) => {
+            handleFiles(Array.from(e.target.files));
+        });
+
+        function handleFiles(files) {
+            files.forEach(file => {
+                if (file.size <= 1024 * 1024) {
+                    selectedFiles.push(file);
+                } else {
+                    showToast(`${file.name} is too large`, 'warning');
+                }
+            });
+            updateFilesList();
+        }
+
+        function updateFilesList() {
+            const list = document.getElementById('filesList');
+            const checkBtn = document.getElementById('checkBtn');
+            
+            if (selectedFiles.length === 0) {
+                list.innerHTML = '';
+                checkBtn.disabled = true;
+                return;
+            }
+            
+            list.innerHTML = selectedFiles.map((file, i) => `
+                <div class="file-tag" style="background:var(--primary); color:white; padding:0.25rem 0.75rem; border-radius:2rem; display:inline-flex; align-items:center; gap:0.5rem">
+                    <span>${file.name}</span>
+                    <span onclick="removeFile(${i})" style="cursor:pointer">&times;</span>
+                </div>
+            `).join('');
+            
+            checkBtn.disabled = false;
+        }
+
+        function removeFile(index) {
+            selectedFiles.splice(index, 1);
+            updateFilesList();
+        }
+
+        function checkPlagiarism() {
+            if (selectedFiles.length < 2) {
+                showToast('Upload at least 2 files', 'warning');
+                return;
+            }
+            
+            showLoading(true);
+            
+            setTimeout(() => {
+                const results = [
+                    { file1: selectedFiles[0].name, file2: selectedFiles[1].name, similarity: 85 },
+                    { file1: selectedFiles[0].name, file2: selectedFiles[2]?.name || 'file3.js', similarity: 45 },
+                    { file1: selectedFiles[1].name, file2: selectedFiles[2]?.name || 'file3.js', similarity: 30 }
+                ];
+                
+                const grid = document.getElementById('resultsGrid');
+                grid.innerHTML = results.map(r => `
+                    <div style="background:var(--light); padding:1rem; margin:0.5rem 0; border-radius:0.5rem">
+                        <strong>${r.file1}</strong> vs <strong>${r.file2}</strong>
+                        <div style="display:flex; align-items:center; gap:1rem; margin-top:0.5rem">
+                            <div style="flex:1; height:8px; background:var(--border); border-radius:4px">
+                                <div style="width:${r.similarity}%; height:100%; background:${r.similarity > 70 ? 'var(--danger)' : r.similarity > 40 ? 'var(--warning)' : 'var(--success)'}; border-radius:4px"></div>
+                            </div>
+                            <span style="font-weight:bold">${r.similarity}%</span>
+                        </div>
+                    </div>
+                `).join('');
+                
+                document.getElementById('plagiarismResults').style.display = 'block';
+                userXP += 25;
+                updateXP();
+                showToast('Plagiarism check complete! +25 XP', 'success');
+                showLoading(false);
+            }, 2000);
+        }
+
+        // AI Detector
+        function detectAI() {
+            const code = document.getElementById('aiCodeInput').value;
+            if (!code) {
+                showToast('Paste some code first', 'warning');
+                return;
+            }
+            
+            showLoading(true);
+            
+            setTimeout(() => {
+                // Simulate AI detection
+                const score = Math.floor(Math.random() * 60) + 20; // 20-80%
+                const bar = document.getElementById('aiBar');
+                const percent = document.getElementById('aiPercentage');
+                const reasons = document.getElementById('aiReasons');
+                
+                bar.style.width = score + '%';
+                bar.className = 'ai-fill ' + (score > 70 ? 'high' : score > 40 ? 'medium' : 'low');
+                percent.textContent = score + '%';
+                
+                reasons.innerHTML = `
+                    <li>${score > 50 ? '⚠️' : '✅'} Comment style: ${score > 60 ? 'AI-like' : 'Human-like'}</li>
+                    <li>${score > 50 ? '⚠️' : '✅'} Variable naming: ${score > 50 ? 'Too perfect' : 'Natural variations'}</li>
+                    <li>${score > 50 ? '⚠️' : '✅'} Code structure: ${score > 50 ? 'Pattern matches AI' : 'Unique patterns'}</li>
+                `;
+                
+                document.getElementById('aiResults').style.display = 'block';
+                userXP += 15;
+                updateXP();
+                showToast('AI analysis complete! +15 XP', 'success');
+                showLoading(false);
+            }, 1500);
+        }
+
+        // Helper functions
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'flex' : 'none';
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            if (toastTimeout) clearTimeout(toastTimeout);
+            
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function updateXP() {
+            document.querySelector('.xp-fill').style.width = (userXP / 2000 * 100) + '%';
+            document.querySelector('.user-profile div div:last-child').textContent = `${userXP} / 2,000 XP`;
+            
+            // Check level up
+            if (userXP >= 2000) {
+                userLevel++;
+                userXP = userXP - 2000;
+                document.querySelector('.level-badge').textContent = `Level ${userLevel}`;
+                showToast(`🎉 Level Up! Now Level ${userLevel}!`, 'success');
+            }
+        }
+
+        // Live code health updates
+        setInterval(() => {
+            const health = Math.floor(Math.random() * 30) + 60; // 60-90%
+            document.getElementById('healthCircle').textContent = health;
+            document.getElementById('healthCircle').style.background = `conic-gradient(var(--success) 0deg ${health * 3.6}deg, var(--border) ${health * 3.6}deg 360deg)`;
+        }, 5000);
+
+        // Sample codes for language select
+        const samples = {
+            javascript: `// JavaScript Example
+function fibonacci(n) {
+    if (n <= 1) return n;
+    return fibonacci(n-1) + fibonacci(n-2);
+}
+
+console.log("Fibonacci Sequence:");
+for (let i = 0; i < 10; i++) {
+    console.log(\`fib(\${i}) = \${fibonacci(i)}\`);
+}`,
+            python: `# Python Example
+def fibonacci(n):
+    if n <= 1:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)
+
+print("Fibonacci Sequence:")
+for i in range(10):
+    print(f"fib({i}) = {fibonacci(i)}")`,
+            java: `// Java Example
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Fibonacci Sequence:");
+        for (int i = 0; i < 10; i++) {
+            System.out.println("fib(" + i + ") = " + fibonacci(i));
+        }
+    }
+    
+    public static int fibonacci(int n) {
+        if (n <= 1) return n;
+        return fibonacci(n-1) + fibonacci(n-2);
+    }
+}`,
+            c: `// C Example
+#include <stdio.h>
+
+int fibonacci(int n) {
+    if (n <= 1) return n;
+    return fibonacci(n-1) + fibonacci(n-2);
+}
+
+int main() {
+    printf("Fibonacci Sequence:\\n");
+    for (int i = 0; i < 10; i++) {
+        printf("fib(%d) = %d\\n", i, fibonacci(i));
+    }
+    return 0;
+}`
+        };
+
+        document.getElementById('language').addEventListener('change', function() {
+            document.getElementById('codeEditor').value = samples[this.value];
+        });
+    </script>
+</body>
+</html>
